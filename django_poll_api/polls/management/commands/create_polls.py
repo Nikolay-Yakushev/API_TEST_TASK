@@ -3,7 +3,7 @@ from polls.models import *
 
 
 class Command(BaseCommand):
-    help = 'Start scrape-parse Function'
+    help = 'Create Polls objects'
 
     def handle(self, *args, **options):
         Poll.objects.create(title='Президенты США', description='Опрос посвященный президентам США')

@@ -3,7 +3,7 @@ from polls.models import *
 
 
 class Command(BaseCommand):
-    help = 'Start scrape-parse Function'
+    help = 'Delete Poll objects'
 
     def handle(self, *args, **options):
         polls_all = Poll.objects.all()
