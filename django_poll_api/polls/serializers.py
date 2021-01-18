@@ -6,7 +6,7 @@ from polls.models import Poll, PollQuestions, PollQuestionChoice, PollAnswer
 class PollChoiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = PollQuestionChoice
-        fields = '__all__'
+        fields = "__all__"
 
 
 class PollQuestionSerializer(serializers.ModelSerializer):
@@ -14,7 +14,7 @@ class PollQuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PollQuestions
-        fields = '__all__'
+        fields = "__all__"
 
 
 class PollSerializer(serializers.ModelSerializer):
@@ -22,7 +22,7 @@ class PollSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Poll
-        fields = '__all__'
+        fields = "__all__"
 
 
 class PollAnswerSerializer(serializers.ModelSerializer):
@@ -33,10 +33,10 @@ class PollAnswerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PollAnswer
-        fields = '__all__'
+        fields = "__all__"
 
 
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = PollQuestions
-        fields = '__all__'
+        fields = "__all__"

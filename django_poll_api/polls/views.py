@@ -10,34 +10,40 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
 from polls.models import Poll, PollAnswer, PollQuestions, PollQuestionChoice
-from polls.serializers import PollSerializer, PollAnswerSerializer, PollQuestionSerializer, PollChoiceSerializer, \
-    QuestionSerializer
+from polls.serializers import (
+    PollSerializer,
+    PollAnswerSerializer,
+    QuestionSerializer,
+)
 import random
 
 
-# Получение списка доступных опросов API for users/admins
-class PollListView(generics.ListAPIView):
-    queryset = Poll.objects
-    serializer_class = PollSerializer
+class ActionsAdminPermission(IsAdminUser):
+    def has_permission(self, request, view):
+        if request.method == "GET":
+            return True
+        return super().has_permission(request, view)
 
+
+# Получение списка доступных опросов API for users/admins
 
 # создание опроса Api for Admins
-class PollCreateView(generics.CreateAPIView):
+class PollCreateView(generics.ListCreateAPIView):
     queryset = Poll.objects
     serializer_class = PollSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [ActionsAdminPermission]
 
 
 #  Api for
 class PollActionsView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Poll.objects.prefetch_related('questions')
+    queryset = Poll.objects.prefetch_related("questions")
     serializer_class = PollSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [ActionsAdminPermission]
 
 
 # прхождение опроса :Api for users/admins
-class PollRetrieveView(generics.RetrieveAPIView):
-    queryset = Poll.objects.prefetch_related('questions')
+class PollPassView(generics.RetrieveAPIView):
+    queryset = Poll.objects.prefetch_related("questions")
     serializer_class = PollSerializer
 
     def post(self, request, *args, **kswargs):
@@ -46,11 +52,10 @@ class PollRetrieveView(generics.RetrieveAPIView):
         if not user.is_authenticated:
             number_ident = str(random.randint(100000, 999999))
 
-            user = User.objects.create_user(username='anonym -' + number_ident,
-                                            email=f'anonym@{number_ident}.com',
-                                            password=number_ident)
+            user = User.objects.create_user(
+                username="anonym -" + number_ident, email=f"anonym@{number_ident}.com", password=number_ident
+            )
             login(self.request, user)
-        print(user_data.items())
         for question_id, question_answer in user_data.items():
             PollAnswer.objects.create(user=user, question_id=question_id, answer=question_answer)
         return Response(status.HTTP_201_CREATED)
@@ -63,12 +68,16 @@ class PollResultsView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.filter(user=self.request.user).select_related(
-            'question').annotate(
-                        poll_id=F('question__poll_id'),
-                        poll_name=F('question__poll__title'),
-                        question_text=F('question__question_text'),
-                        question_type=F('question__question_type'))
+        return (
+            queryset.filter(user=self.request.user)
+            .select_related("question")
+            .annotate(
+                poll_id=F("question__poll_id"),
+                poll_name=F("question__poll__title"),
+                question_text=F("question__question_text"),
+                question_type=F("question__question_type"),
+            )
+        )
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -76,25 +85,18 @@ class PollResultsView(generics.ListAPIView):
         serializer = self.get_serializer(queryset, many=True)
         result = defaultdict(list)
         for item in serializer.data:
-            result['poll_id: ' + str(item['poll_id']) + '' + \
-                   '; Poll title: ' + item['poll_name']].append(item)
+            result["poll_id: " + str(item["poll_id"]) + "" + "; Poll title: " + item["poll_name"]].append(item)
         return Response(result)
 
 
 # Создать Question for Admins
 class QuestionCreateView(generics.CreateAPIView):
     queryset = PollQuestions.objects
-    serializer_class = PollQuestionSerializer
-    permission_classes = [IsAdminUser]
+    serializer_class = QuestionSerializer
+    permission_classes = [ActionsAdminPermission]
 
 
 class QuestionActionsView(generics.RetrieveUpdateDestroyAPIView):
     queryset = PollQuestions.objects
-    serializer_class = PollQuestionSerializer
-    permission_classes = [IsAdminUser]
-
-    def get_queryset(self):
-        # Не могу отобразить все вопросы
-        queryset = PollQuestions.objects.filter(poll_id=int(self.kwargs['pk']))
-
-        return queryset
+    serializer_class = QuestionSerializer
+    permission_classes = [ActionsAdminPermission]

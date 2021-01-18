@@ -13,20 +13,18 @@ class Poll(models.Model):
     description = models.TextField()
 
     class Meta:
-        app_label = 'polls'
+        app_label = "polls"
 
     def __str__(self):
-        return f'''poll_title: {self.title},
+        return f"""poll_title: {self.title},
                    start_date : {self.created_at},
                    end_date : {self.finished_at}
-                   description : {self.description}'''
+                   description : {self.description}"""
 
 
 # Атрибуты вопросов: текст вопроса, тип вопроса (ответ текстом, ответ с выбором одного варианта,
 class PollQuestions(models.Model):
-    QUESTION_TYPE_CHOICES = [("text", "Text"),
-                             ("choice", "Choice"),
-                             ("multiple_choices", "Multiple choices")]
+    QUESTION_TYPE_CHOICES = [("text", "Text"), ("choice", "Choice"), ("multiple_choices", "Multiple choices")]
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name="questions")
     question_text = models.TextField(null=False)
     question_type = models.CharField(max_length=10, null=False, choices=QUESTION_TYPE_CHOICES)
@@ -34,7 +32,7 @@ class PollQuestions(models.Model):
 
 class PollQuestionChoice(models.Model):
     # todo Many quetions - 1 type of choice
-    question = models.ForeignKey(PollQuestions, on_delete=models.CASCADE, related_name='choices')
+    question = models.ForeignKey(PollQuestions, on_delete=models.CASCADE, related_name="choices")
     content = models.TextField(null=False)
 
 
@@ -44,6 +42,6 @@ class PollAnswer(models.Model):
     question = models.ForeignKey(PollQuestions, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'''answer: {self.answer},
+        return f"""answer: {self.answer},
                    username : {self.user},
-                   question : {self.question}'''
+                   question : {self.question}"""

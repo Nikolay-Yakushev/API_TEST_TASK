@@ -9,25 +9,30 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('polls', '0002_auto_20210112_1615'),
+        ("polls", "0002_auto_20210112_1615"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='PollQuestionChoice',
+            name="PollQuestionChoice",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content', models.TextField()),
-                ('question_choice', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='choices', to='polls.PollQuestions')),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("content", models.TextField()),
+                (
+                    "question_choice",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="choices", to="polls.PollQuestions"
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='PollAnswer',
+            name="PollAnswer",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('answer', models.CharField(max_length=50)),
-                ('question', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='polls.PollQuestions')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("answer", models.CharField(max_length=50)),
+                ("question", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="polls.PollQuestions")),
+                ("user", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

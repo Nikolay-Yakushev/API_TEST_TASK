@@ -8,27 +8,37 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Poll',
+            name="Poll",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=50)),
-                ('created_at', models.DateField(auto_now=True)),
-                ('finished_at', models.DateField()),
-                ('description', models.TextField()),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("title", models.CharField(max_length=50)),
+                ("created_at", models.DateField(auto_now=True)),
+                ("finished_at", models.DateField()),
+                ("description", models.TextField()),
             ],
         ),
         migrations.CreateModel(
-            name='PollQuestions',
+            name="PollQuestions",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('question_text', models.TextField()),
-                ('question_type', models.CharField(choices=[('text', 'Text'), ('choice', 'Choice'), ('multiple_choices', 'Multiple choices')], max_length=10)),
-                ('poll', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='questions', to='polls.Poll')),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("question_text", models.TextField()),
+                (
+                    "question_type",
+                    models.CharField(
+                        choices=[("text", "Text"), ("choice", "Choice"), ("multiple_choices", "Multiple choices")],
+                        max_length=10,
+                    ),
+                ),
+                (
+                    "poll",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="questions", to="polls.Poll"
+                    ),
+                ),
             ],
         ),
     ]

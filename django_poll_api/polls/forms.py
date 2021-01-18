@@ -5,4 +5,4 @@ from models import Poll
 class FilmForm(ModelForm):
     class Meta:
         model = Poll
-        readonly = 'start_poll_date'
+        readonly = "start_poll_date"
