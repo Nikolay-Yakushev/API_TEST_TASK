@@ -26,7 +26,7 @@ class Command(BaseCommand):
                                                          question_type='text')
 
                 question3 = PollQuestions.objects.create(poll_id=poll_instance.id,
-                                                         question_text='Кто из президентов жили в 20 веке',
+                                                         question_text='Кто из президентов США жил в 20 веке',
                                                          question_type='multiple_choice')
 
                 answer = PollQuestionChoice(question_id=question3.id, content='Франклин Рузвельт').save()
