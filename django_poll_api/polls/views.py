@@ -88,14 +88,13 @@ class QuestionCreateView(generics.CreateAPIView):
     permission_classes = [IsAdminUser]
 
 
-# todo Хочу сделать выборку вопросов, но не получается их выбрать
 class QuestionActionsView(generics.RetrieveUpdateDestroyAPIView):
     queryset = PollQuestions.objects
     serializer_class = PollQuestionSerializer
     permission_classes = [IsAdminUser]
 
     def get_queryset(self):
-        # получить все вопросы по poll_id
-        # Не могу сделать
-        queryset = PollQuestions.objects.filter(poll_id=self.kwargs['pk'])
+        # Не могу отобразить все вопросы
+        queryset = PollQuestions.objects.filter(poll_id=int(self.kwargs['pk']))
+
         return queryset
