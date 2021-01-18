@@ -1,7 +1,8 @@
 # API_TEST_TASK
 How to run via docker/Запустить с помощью docker:
-    1) docker pull driver220v/api_django
-    2) docker run -it -p 8000:80000 driver220v/api_django
+
+    1) docker pull driver220v/django_api
+    2) docker run -it -p 8000:80000 driver220v/django_api
     3) docker exec -it driver220v/django_api bash
     4) python3 manage.py runserver 0.0.0.0:8000
 Описание API
