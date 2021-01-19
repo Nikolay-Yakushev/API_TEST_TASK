@@ -32,3 +32,6 @@ post запрос JSON содержащий question_id и id(s) ответа
         
             polls_results/
 
+
+Для создания новых юзеров, перейдите по ```/admin```, авторизуйтесь  
+под login: admin passw: admin, сойздайте нового юзера
